@@ -95,13 +95,15 @@ Application.belongsTo(Job);
 Job.hasMany(Application);
 
 module.exports={
-    Student,
-    CompanyManager,
-    Admin,
-    User,
-    Company,
-    Job,
-    Application,
-    OneAuth,
-    db
+    models:{
+        Student,
+        CompanyManager,
+        Admin,
+        User,
+        Company,
+        Job,
+        Application,
+        OneAuth
+    },
+    db:db
 };
