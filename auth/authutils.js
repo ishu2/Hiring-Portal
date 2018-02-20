@@ -62,3 +62,10 @@ function ensureStudent(){
         }
     }
 }
+
+module.exports={
+    ensureLogin,
+    ensureAdmin,
+    ensureCompanyManager,
+    ensureStudent
+};
