@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register</title>
+</head>
+<body>
+    <h3>Register as a {{role}}</h3>
+    <form method="post" action="/signup/user">
+      <input type="text" placeholder="Your Name.." name="name"><br>
+      <input type="email" placeholder="Your email.." name="email"><br>
+      <input type="password" placeholder="Your password.." name="password"><br>
+      {{#if isAdmin}}
+      <input type="password" placeholder="secret" name="secret"><br>
+      {{/if}}
+      <input type="submit" value="Sign Up">
+    </form>
+</body>
+</html>
