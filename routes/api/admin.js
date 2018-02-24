@@ -24,7 +24,7 @@ router.post('/add',passport.authenticate('bearer'),ensure.ensureAdmin,function(r
     });
 });
 
-router.git('/:id',passport.authenticate('bearer'),ensure.ensureAdmin,function(req,res){
+router.get('/:id',passport.authenticate('bearer'),ensure.ensureAdmin,function(req,res){
     models.User.findOne({
         where:{id:req.params.id},
         include:models.Admin
