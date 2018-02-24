@@ -36,3 +36,29 @@ router.get('/:id',passport.authenticate('bearer'),ensure.ensureAdmin,function(re
     });
 });
 
+router.put('/:id/edit',passport.authenticate('bearer'),ensure.ensureAdmin,function(req,res){
+    models.Admin.update({
+        centre:centre,
+        designation:designation
+    },{where:{userId:userId}}).then(function(rows){
+        if(rows[0]!==0){
+            var admin=rows[1][0].get();
+            res.status(200).send(admin);
+        }
+        return res.status(200).send(admin);
+    }).catch(function(err){
+        return res.status(500).send({success:false});
+    })
+});
+
+router.get('/',passport.authenticate('bearer'),ensure.ensureAdmin,function(req,res){
+    models.Admin.findAll({
+        include:models.User
+    }).then(function(admins){
+        res.status(200).send(admins);
+    }).catch(function(err){
+        console.log(err);
+    });
+});
+
+module.exports=router;
