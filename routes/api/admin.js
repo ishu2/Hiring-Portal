@@ -23,3 +23,4 @@ router.post('/add',passport.authenticate('bearer'),ensure.ensureAdmin,function(r
         res.status(500).send("Could not create the Admin..");
     });
 });
+
