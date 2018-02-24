@@ -24,3 +24,15 @@ router.post('/add',passport.authenticate('bearer'),ensure.ensureAdmin,function(r
     });
 });
 
+router.git('/:id',passport.authenticate('bearer'),ensure.ensureAdmin,function(req,res){
+    models.User.findOne({
+        where:{id:req.params.id},
+        include:models.Admin
+    }).then(function(user){
+        res.status(200).send(user);
+    }).catch(function(err){
+        console.log(err);
+        res.status(500).send("Unknown admin..");
+    });
+});
+
