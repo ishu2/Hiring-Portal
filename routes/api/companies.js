@@ -23,3 +23,14 @@ router.post('/add',passport.authenticate('bearer'),ensure.ensureAdmin(),function
       res.status(500).send("Could not create company..");
   });
 });
+
+router.get('/',function(req,res){
+    models.Company.findAll({
+        attributes:['id','name','logo','locations']
+    }).then(function(companies){
+        res.status(200).send(companies);
+    }).catch(function(err){
+        console.log(err);
+        res.status(500).send("Could not get companies..");
+    });
+});
