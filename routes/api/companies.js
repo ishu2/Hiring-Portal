@@ -118,3 +118,21 @@ router.put('/:id', passport.authenticate('bearer'), function (req, res) {
       res.status(401).send("Please login first");
     }
   });
+
+  router.get('/:id/jobs',function(req,res){
+      var companyId=parseInt(req.params.id);
+      models.Job.findAll({
+          where:{companyId:companyId},
+          attributes:['title','location','salary']
+      }).then(function(jobs){
+          if(jobs)
+            res.status(200).send(jobs);
+          else
+            res.status(404).send("There are presently no job in this company");
+      }).catch(function(err){
+          console.log(err);
+          res.status(500).send("Unknown company");
+      });
+  });
+
+  
