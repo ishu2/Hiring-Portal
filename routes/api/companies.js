@@ -34,3 +34,55 @@ router.get('/',function(req,res){
         res.status(500).send("Could not get companies..");
     });
 });
+
+router.get('/:id',function(req,res){
+    var companyId=parseInt(req.params.id);
+    models.Company.findOne({
+        where:{id:companyId}
+    }).then(function(company){
+        if(company)
+          res.status(200).send(company.get());
+        else
+          res.status(500).send("Could not find any company with this is..");
+    }).catch(function(err){
+        console.log(err);
+        res.status(500).send("Unknown company..");
+    });
+});
+
+router.put('/:id',passport.authenticate('bearer'),function(req,res){
+    var companyId=parseInt(req.params.id),
+        logo=req.body.logo,
+        website=req.body.website,
+        locations=req.body.locations,
+        skills=req.body.skills,
+        companyEmail=req.body.companyEmail,
+        companyNumber=req.body.companyNumber;
+
+        if(req.user){
+            models.Admin.findOne({
+                where:{userId:req.user.id}
+            }).then(function(admin){
+                if(admin){
+                    models.Company.update({
+                        website:website,
+                        logo:logo,
+                        locations:locations,
+                        skills:skills,
+                        companyEmail:companyEmail,
+                        companyNumber:companyNumber
+                    },{
+                        where:{id:companyId}
+                    }).then(function(rows){
+                        res.status(200).send("Updated..");
+                    }).catch(function(err){
+                        console.log(err);
+                        res.status(500).send("Error");
+                    });
+                }
+                else{
+                    
+                }
+            })
+        }
+})
