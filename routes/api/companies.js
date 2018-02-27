@@ -135,4 +135,22 @@ router.put('/:id', passport.authenticate('bearer'), function (req, res) {
       });
   });
 
-  
+  router.get('/:id/jobs/:jobId',function(req,res){
+      var companyId=parseInt(req.params.id),
+          jobId=parseInt(req.params.jobId);
+      models.Job.findAll({
+          where:{
+              companyId:companyId,
+              id:jobId
+          }
+      }).then(function(job){
+          if(job)
+            res.status(200).send(job);
+          else
+            res.status(404).send("there is no job with the given id");
+      }).catch(function(err){
+          console.log(err);
+          res.status(500).send("Unknown job");
+      });
+  });
+
