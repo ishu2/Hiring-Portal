@@ -210,4 +210,4 @@ router.put('/:id', passport.authenticate('bearer'), function (req, res) {
       }
   });
 
-  
+  module.exports=router;
