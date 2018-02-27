@@ -154,3 +154,60 @@ router.put('/:id', passport.authenticate('bearer'), function (req, res) {
       });
   });
 
+  router.get('/:id/applications',passport.authenticate('bearer'),function(req,res){
+      var companyId=parseInt(req.params.id);
+
+      if(req.user){
+          models.Admin.findOne({
+              where:{userId:req.user.id}
+          }).then(function(admin){
+              if(admin){
+                  models.Application.findAll({
+                      where:{'$job.companyId$':companyId},
+                      include:[{
+                          model:models.User,
+                          include:models.Student
+                      }, models.Job]
+                  }).then(function(applications){
+                      res.status(200).send(applications);
+                  }).catch(function(err){
+                      console.log(err);
+                      res.status(500).send("Unlnown company..");
+                  });
+              }
+              else{
+                  models.CompanyManager.findOne({
+                      where:{userId:req.user.id, companyId:companyId}
+                  }).then(function(manager){
+                      if(manager){
+                          models.Application.findAll({
+                              where:{'$job.companyId$':companyId},
+                              include:[{
+                                  model:models.User,
+                                  include:models.Student
+                              }, models.Job]
+                          }).then(function(applications){
+                              res.status(200).send(applications);
+                          }).catch(function(err){
+                              console.log(err);
+                              res.status(500).send("Unknown company");
+                          });
+                      }
+                      else
+                        res.status(401).send("Only admins and company managers are allowed");
+                  }).catch(function(err){
+                      console.log(err);
+                      res.status(500).send("Error");
+                  });
+              }
+          }).catch(function(err){
+              console.log(err);
+              res.status(500).send("Error");
+          });
+      }
+      else{
+          res.status(401).send("Please login first");
+      }
+  });
+
+  
