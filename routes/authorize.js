@@ -34,10 +34,58 @@ route.post('/',function(req,res){
               name:user.data.firstname+" "+user.data.lastname,
               email:user.data.email
             }
+            , oneauthToken:authtoken.data.access_token
+            , token:uid(30)
+          },{
+            include:[models.User]
+          }).then(function(oneauthFinal){
+            res.status(201).send({
+              success:true,
+              token:oneauthFinal.token,
+              user:user.data.firstname+" "+user.data.lastname
+            })
+          }).catch(function(err){
+            console.log(err);
+            res.status(500).send({
+              success:false,
+              code:"500",
+              error:{
+                message:"could not create in Oneauth table(Internal server error"
+              }
+            })
+          })
+        }).catch(function(err){
+          console.log(err);
+          res.status(500).send({
+            success:false,
+            code:"500",
+            error:{
+              message:"could not get details from Oneauth API(Internal Server Error"
+            }
           })
         })
+      }
+    }).catch(function(err){
+      console.log(err);
+      res.status(500).send({
+        success:false,
+        code:"500",
+        error:{
+          message:"Could not find in Oneauth(Internal Server error)"
+        }
+      })
+    })
+  }).catch(function(err){
+    console.log(err);
+    res.status(500).send({
+      success:false,
+      code:"500",
+      error:{
+        message:"Could not find in Oneauth(Internal Server error)"
       }
     })
   })
 })
+
+module.exports=route;
 
